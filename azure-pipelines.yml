@@ -3,6 +3,8 @@ trigger:
 
 pool:
   name: Default # Use the correct pool where your self-hosted agent is registered
+variables:
+  AZURE_STORAGE_ACCOUNT: 'samborastorage'
 
 steps:
 - script: |
@@ -11,8 +13,21 @@ steps:
     copy \\DESKTOP-6BC680U\Users\Dan\agent\SharedFolder\* $(Build.ArtifactStagingDirectory)
   displayName: "Pull Folder Content"
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathToPublish: '$(Build.ArtifactStagingDirectory)'
-    artifactName: 'FolderContent'
-    publishLocation: 'Container'
+
+# Install Azure CLI via PowerShell
+- powershell: |
+    Write-Host "Installing Azure CLI..."
+    Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile "AzureCLISetup.msi"
+    Start-Process msiexec.exe -ArgumentList '/i', 'AzureCLISetup.msi', '/quiet', '/norestart' -NoNewWindow -Wait
+    rm AzureCLISetup.msi
+  displayName: "Install Azure CLI via PowerShell"
+
+# Upload files to Azure Blob Storage
+- powershell: |
+    Write-Host "Uploading files to Azure Blob Storage..."
+    az storage blob upload-batch `
+      --account-name $(AZURE_STORAGE_ACCOUNT) `
+      --account-key $(AZURE_STORAGE_KEY) `
+      --source $(Build.ArtifactStagingDirectory) `
+      --destination upload
+  displayName: "Upload Files to Azure Storage"
