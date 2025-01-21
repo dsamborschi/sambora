@@ -7,8 +7,8 @@ pool:
 steps:
 - script: |
     echo "Pulling folder content..."
-    dir \\shared\folder\path
-    copy \\shared\folder\path\* $(Build.ArtifactStagingDirectory)
+    dir \\DESKTOP-6BC680U\Users\Dan\agent\SharedFolder
+    copy \\DESKTOP-6BC680U\Users\Dan\agent\SharedFolder\* $(Build.ArtifactStagingDirectory)
   displayName: "Pull Folder Content"
 
 - task: PublishBuildArtifacts@1
