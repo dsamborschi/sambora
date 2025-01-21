@@ -1,0 +1,18 @@
+trigger:
+- main
+
+pool:
+  name: Default # Use the correct pool where your self-hosted agent is registered
+
+steps:
+- script: |
+    echo "Pulling folder content..."
+    dir \\shared\folder\path
+    copy \\shared\folder\path\* $(Build.ArtifactStagingDirectory)
+  displayName: "Pull Folder Content"
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: 'FolderContent'
+    publishLocation: 'Container'
