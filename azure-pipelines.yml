@@ -35,7 +35,7 @@ steps:
 - task: AzureCLI@2
   inputs:
     azureSubscription: 'upload'  # The service connection to your Azure subscription
-    scriptType: 'bash'
+    scriptType: 'ps'
     scriptLocation: 'inlineScript'
     inlineScript: |
       # Login to Azure CLI
