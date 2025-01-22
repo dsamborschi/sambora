@@ -44,3 +44,12 @@ steps:
       # Upload files from the ArtifactStagingDirectory to Azure File Share
       az storage file upload-batch -d $(AZURE_FILE_SHARE_NAME) --source $(Build.ArtifactStagingDirectory) --account-name $(AZURE_STORAGE_ACCOUNT) --account-key $(AZURE_STORAGE_KEY)
   displayName: 'Upload Files to Azure File Share'
+
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'upload'
+    scriptType: 'ps'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      echo "Uploading files to Azure File Share..."
+      azcopy copy "$(sourceFolder)" "https://$(AZURE_STORAGE_ACCOUNT).file.core.windows.net/$(AZURE_FILE_SHARE_NAME)$(targetPath)?$(sas_token)" --recursive
