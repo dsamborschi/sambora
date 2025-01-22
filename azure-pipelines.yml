@@ -34,7 +34,7 @@ steps:
 
 - task: AzureCLI@2
   inputs:
-    azureSubscription: 'Azure subscription 1'  # The service connection to your Azure subscription
+    azureSubscription: 'upload'  # The service connection to your Azure subscription
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
