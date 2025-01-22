@@ -39,7 +39,7 @@ steps:
     scriptLocation: 'inlineScript'
     inlineScript: |
       # Login to Azure CLI
-      az storage account login --name $(AZURE_STORAGE_ACCOUNT) --account-key $(AZURE_STORAGE_KEY)
+      # az storage account login --name $(AZURE_STORAGE_ACCOUNT) --account-key $(AZURE_STORAGE_KEY)
 
       # Upload files from the ArtifactStagingDirectory to Azure File Share
       az storage file upload-batch -d $(AZURE_FILE_SHARE_NAME) --source $(Build.ArtifactStagingDirectory) --account-name $(AZURE_STORAGE_ACCOUNT) --account-key $(AZURE_STORAGE_KEY)
