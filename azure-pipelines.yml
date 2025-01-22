@@ -6,11 +6,13 @@ pool:
 variables:
   AZURE_STORAGE_ACCOUNT: 'samborastorage'
   AZURE_FILE_SHARE_NAME: 'myshare'
+  SOURCE_FOLDER: '\\DESKTOP-6BC680U\Users\Dan\agent\SharedFolder'
+
 steps:
 - script: |
     echo "Pulling folder content..."
-    dir \\DESKTOP-6BC680U\Users\Dan\agent\SharedFolder
-    copy \\DESKTOP-6BC680U\Users\Dan\agent\SharedFolder\* $(Build.ArtifactStagingDirectory)
+    dir $(SOURCE_FOLDER)
+    copy $(SOURCE_FOLDER)\* $(Build.ArtifactStagingDirectory)
   displayName: "Pull Folder Content"
 
 
@@ -52,4 +54,4 @@ steps:
     scriptLocation: 'inlineScript'
     inlineScript: |
       echo "Uploading files to Azure File Share..."
-      azcopy copy "$(sourceFolder)" "https://$(AZURE_STORAGE_ACCOUNT).file.core.windows.net/$(AZURE_FILE_SHARE_NAME)$(targetPath)?$(sas_token)" --recursive
+      azcopy copy "$(Build.ArtifactStagingDirectory)" "https://$(AZURE_STORAGE_ACCOUNT).file.core.windows.net/$(AZURE_FILE_SHARE_NAME)$(targetPath)?$(sas_token)" --recursive
