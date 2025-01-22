@@ -54,4 +54,4 @@ steps:
     scriptLocation: 'inlineScript'
     inlineScript: |
       echo "Uploading files to Azure File Share..."
-      azcopy copy "$(Build.ArtifactStagingDirectory)" "https://$(AZURE_STORAGE_ACCOUNT).file.core.windows.net/$(AZURE_FILE_SHARE_NAME)$(targetPath)?$(sas_token)" --recursive
+      azcopy copy "$(Build.ArtifactStagingDirectory)" "https://$(AZURE_STORAGE_ACCOUNT).file.core.windows.net/$(AZURE_FILE_SHARE_NAME)$(AZURE_FILE_SHARE_NAME)?$(sas_token)" --recursive
