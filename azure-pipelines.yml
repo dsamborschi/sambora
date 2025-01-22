@@ -12,7 +12,7 @@ steps:
 - script: |
     echo "Pulling folder content..."
     dir $(SOURCE_FOLDER)
-    copy $(SOURCE_FOLDER)\* $(Build.ArtifactStagingDirectory)
+    xcopy "$(SOURCE_FOLDER)" "$(Build.ArtifactStagingDirectory)" /E /I /H /Y
   displayName: "Pull Folder Content"
 
 
