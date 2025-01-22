@@ -5,7 +5,7 @@ pool:
   name: Default # Use the correct pool where your self-hosted agent is registered
 variables:
   AZURE_STORAGE_ACCOUNT: 'samborastorage'
-
+  AZURE_FILE_SHARE_NAME: 'myshare'
 steps:
 - script: |
     echo "Pulling folder content..."
@@ -31,3 +31,16 @@ steps:
       --source $(Build.ArtifactStagingDirectory) `
       --destination upload
   displayName: "Upload Files to Azure Storage"
+
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'Azure subscription 1'  # The service connection to your Azure subscription
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      # Login to Azure CLI
+      az storage account login --name $(AZURE_STORAGE_ACCOUNT) --account-key $(AZURE_STORAGE_KEY)
+
+      # Upload files from the ArtifactStagingDirectory to Azure File Share
+      az storage file upload-batch -d $(AZURE_FILE_SHARE_NAME) --source $(Build.ArtifactStagingDirectory) --account-name $(AZURE_STORAGE_ACCOUNT) --account-key $(AZURE_STORAGE_KEY)
+  displayName: 'Upload Files to Azure File Share'
